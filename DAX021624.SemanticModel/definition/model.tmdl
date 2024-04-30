@@ -1,0 +1,26 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Credit Cards","Customers","Products","Sales","Texts"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.128.1177.0 (24.04)
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'Credit Cards'
+ref table DateTableTemplate_0021b7d7-77fa-4b0e-b3aa-1e980f93e264
+ref table LocalDateTable_381bb021-e65d-4f47-84eb-e4dadc559250
+ref table Customers
+ref table LocalDateTable_e23cda8a-f622-4a67-a6ab-7300c4415955
+ref table Products
+ref table Sales
+ref table Texts
+ref table 'ex 12'
+

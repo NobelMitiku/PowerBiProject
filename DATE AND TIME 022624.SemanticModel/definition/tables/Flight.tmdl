@@ -1,0 +1,77 @@
+table Flight
+	lineageTag: 97c515bb-80cd-432e-8f54-21977d0c4cf2
+
+	column 'Flight ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: efc90578-ee03-4ab2-a7a0-08bf73205a29
+		summarizeBy: count
+		sourceColumn: Flight ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Airline
+		dataType: string
+		lineageTag: f9e296f2-3ed1-4311-9a75-b5ed9580b8f9
+		summarizeBy: none
+		sourceColumn: Airline
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Departure City'
+		dataType: string
+		lineageTag: 178705f0-cbbd-4ca8-af0f-058492d7df6e
+		summarizeBy: none
+		sourceColumn: Departure City
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Arrival City'
+		dataType: string
+		lineageTag: 70440385-e9e2-4760-ab85-d7059d59ed6d
+		summarizeBy: none
+		sourceColumn: Arrival City
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Departure Time'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 98706dde-7b01-4c31-a86a-8cfec0a04548
+		summarizeBy: none
+		sourceColumn: Departure Time
+
+		variation Variation
+			isDefault
+			relationship: 23da3c42-c273-4844-b058-bd64b8eb2400
+			defaultHierarchy: LocalDateTable_6eadb2ab-4455-43cd-bc43-7a1787c3f9aa.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Arrival Time'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5b98607c-41dc-4946-aff0-45c309bb93ba
+		summarizeBy: none
+		sourceColumn: Arrival Time
+
+		variation Variation
+			isDefault
+			relationship: ecc56012-801e-40cf-9a9d-150526a5f2be
+			defaultHierarchy: LocalDateTable_b193def7-c37c-4733-b30b-2e2a8ac0c94f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Flight = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Date Time.xlsx"), null, true),
+				    Flight_Sheet = Source{[Item="Flight",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Flight_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Flight ID", Int64.Type}, {"Airline", type text}, {"Departure City", type text}, {"Arrival City", type text}, {"Departure Time", type datetime}, {"Arrival Time", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

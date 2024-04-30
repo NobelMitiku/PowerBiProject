@@ -1,0 +1,96 @@
+table Projects
+	lineageTag: e477adb7-4fd8-4813-9c7d-d9238e07e32f
+
+	column ProjectID
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a3a770f-dc09-447a-bc2f-0177ecbd1ac8
+		summarizeBy: count
+		sourceColumn: ProjectID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectName
+		dataType: string
+		lineageTag: 71bf5567-e8af-45a6-8f3c-7fc773d89713
+		summarizeBy: none
+		sourceColumn: ProjectName
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7b665dde-a09a-431a-a43f-2ecb5bbe2557
+		summarizeBy: none
+		sourceColumn: StartDate
+
+		variation Variation
+			isDefault
+			relationship: 8dd2631c-02a3-4f07-ae09-334ae0f2c89a
+			defaultHierarchy: LocalDateTable_085be249-5f62-43d6-a9f7-16be262e8e32.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column EndDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5085fa76-300d-420a-88b7-867853bd4688
+		summarizeBy: none
+		sourceColumn: EndDate
+
+		variation Variation
+			isDefault
+			relationship: 6f3c439e-8b1c-486d-bede-108072cd73a2
+			defaultHierarchy: LocalDateTable_5db1293e-73b8-4399-81d1-a8f9b01cbda2.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FORMATTED MONTH' = FORMAT(Projects[EndDate],"MM")
+		dataType: string
+		lineageTag: 61d0ff07-4b7b-4c71-8d1e-ecb885127e45
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'HOURLY SHIFTS' = HOUR(Projects[StartDate])
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e7b6ad0-b211-4fb5-9527-8af09db8b401
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column QUARTER = QUARTER(Projects[StartDate])
+		dataType: int64
+		formatString: 0
+		lineageTag: 5012259f-e2e2-44ed-a203-c83b9ad30c3e
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'days left to finish project' = datediff(utctoday(),'Projects'[EndDate],DAY)
+		dataType: int64
+		formatString: 0
+		lineageTag: d224d8c7-fd80-4d71-bb69-e47fd156c451
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Projects = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Date Time (1).xlsx"), null, true),
+				    Projects_Sheet = Source{[Item="Projects",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Projects_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ProjectID", Int64.Type}, {"ProjectName", type text}, {"StartDate", type datetime}, {"EndDate", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

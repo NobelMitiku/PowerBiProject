@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "line pie donut bar column charts exercise"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "a97685a1-a430-48c5-be2c-08a576c3c082"
+  }
+}

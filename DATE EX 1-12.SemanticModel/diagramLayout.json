@@ -1,0 +1,151 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 38
+          },
+          "nodeIndex": "Customers",
+          "nodeLineageTag": "54cf8d37-e467-4387-9b4b-20a2bb33c2ee",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 284,
+            "y": 62
+          },
+          "nodeIndex": "Employee",
+          "nodeLineageTag": "ffbfa059-5842-4d35-8126-319ba3cbc56b",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 50
+          },
+          "nodeIndex": "Events",
+          "nodeLineageTag": "8a13cbbf-8042-49df-af0f-a6f7e9f26d61",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 852,
+            "y": 38
+          },
+          "nodeIndex": "Flight",
+          "nodeLineageTag": "40a38235-d1b9-4899-8b35-1b2c8eb5655f",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1136,
+            "y": 62
+          },
+          "nodeIndex": "Projects",
+          "nodeLineageTag": "e477adb7-4fd8-4813-9c7d-d9238e07e32f",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1420,
+            "y": 50
+          },
+          "nodeIndex": "AUTO DATE",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1998,
+            "y": -10
+          },
+          "nodeIndex": "Orders",
+          "nodeLineageTag": "2c3b0d20-cb4e-4842-a8de-7776b147b2fc",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1714,
+            "y": 28
+          },
+          "nodeIndex": "Products",
+          "nodeLineageTag": "812fe380-93a5-4dae-9c6f-82723b64f266",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2272,
+            "y": 86
+          },
+          "nodeIndex": "Returns",
+          "nodeLineageTag": "004ee1d3-73b1-4fa5-9323-70738c76a961",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2556,
+            "y": 86
+          },
+          "nodeIndex": "Users",
+          "nodeLineageTag": "c779b732-66f3-40f2-9b03-844372b51854",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

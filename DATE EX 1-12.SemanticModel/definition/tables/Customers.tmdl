@@ -1,0 +1,151 @@
+table Customers
+	lineageTag: 54cf8d37-e467-4387-9b4b-20a2bb33c2ee
+
+	column CustomerID
+		dataType: int64
+		formatString: 0
+		lineageTag: 9c24f686-318b-4d8f-97cf-ed41b675fd4e
+		summarizeBy: count
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstName
+		dataType: string
+		lineageTag: 73f222bc-425a-49c5-8018-7dd835195873
+		summarizeBy: none
+		sourceColumn: FirstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastName
+		dataType: string
+		lineageTag: d2d964e5-99f4-4622-9165-d99e3fc2c81a
+		summarizeBy: none
+		sourceColumn: LastName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BirthDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c92d3ea9-efe0-4ce2-8d3d-21faccf78146
+		summarizeBy: none
+		sourceColumn: BirthDate
+
+		variation Variation
+			isDefault
+			relationship: a0fd5d6b-f31f-4264-a8a6-97fda3672969
+			defaultHierarchy: LocalDateTable_3941cfcc-cf39-498e-851c-9d51fca8556d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Membership Start Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c74316d9-909c-43d7-baf0-69b5f36fcb5e
+		summarizeBy: none
+		sourceColumn: Membership Start Date
+
+		variation Variation
+			isDefault
+			relationship: 804f0fae-7ac5-44ef-ada4-cf49a39e5d7e
+			defaultHierarchy: LocalDateTable_a3ec7e21-8f00-4711-b304-05c124d704ac.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last Purchase Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 81d58f16-7965-4bd1-bb99-8dd7e8948aee
+		summarizeBy: none
+		sourceColumn: Last Purchase Date
+
+		variation Variation
+			isDefault
+			relationship: 7ca4767a-aa45-465b-b280-74e08e2c95f4
+			defaultHierarchy: LocalDateTable_57474575-f876-4ae2-b6e8-9849ee0a5847.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column CURRENTDATE = ```
+			NOW() 
+			```
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: beb077c3-c63b-41ed-9cf7-3c0489727347
+		summarizeBy: none
+		isDataTypeInferred
+
+		variation Variation
+			isDefault
+			relationship: df1896b8-f783-4a4e-a10e-92dcdfb9c9b9
+			defaultHierarchy: LocalDateTable_a7b42cc2-9476-46e4-9292-0b4320ff723c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FORMATTED DATE' = ```
+			FORMAT(Customers[BirthDate],"DD/MM/YYYY") 
+			```
+		dataType: string
+		lineageTag: 8fb83e72-9be3-479c-b7aa-9042bff89695
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age = year(today()) - year(Customers[BirthDate])
+		dataType: int64
+		formatString: 0
+		lineageTag: a8f6ae25-0800-415e-948c-8e0a87969262
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'cutomer segment' = if(Customers[Age]>35,"adult","young-adult" )
+		dataType: string
+		lineageTag: 74f2572e-00d6-4105-9b2b-de4da55d804b
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column segment2 = switch(Customers[Age],28,"Twenty Eight",44,"Forty Four",38,"Thirty Eight","other numbers")
+		dataType: string
+		lineageTag: a612d5c3-3f72-413e-92d1-b8158a91f41d
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'start day' = Customers[Membership Start Date].[Date]<Customers[Last Purchase Date].[Date]
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1ca00d7a-3b21-4474-906a-f91279ede038
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'start day2' = If(Customers[Membership Start Date].[Date]<Customers[Last Purchase Date],"true","false")
+		dataType: string
+		lineageTag: b5c93daf-db6c-490a-9ffc-ce1b9e9a0a03
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customers = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Date Time (1).xlsx"), null, true),
+				    Customers_Sheet = Source{[Item="Customers",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Customers_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CustomerID", Int64.Type}, {"FirstName", type text}, {"LastName", type text}, {"BirthDate", type datetime}, {"Membership Start Date", type datetime}, {"Last Purchase Date", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

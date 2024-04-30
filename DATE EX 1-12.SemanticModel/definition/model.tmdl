@@ -1,0 +1,43 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Customers","Employee","Events","Flight","Projects","Orders","Returns","Products","Users"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.128.1177.0 (24.04)
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Customers
+ref table DateTableTemplate_6ea16ef8-cbdb-495c-967f-1d179a2d8235
+ref table LocalDateTable_3941cfcc-cf39-498e-851c-9d51fca8556d
+ref table LocalDateTable_a3ec7e21-8f00-4711-b304-05c124d704ac
+ref table LocalDateTable_57474575-f876-4ae2-b6e8-9849ee0a5847
+ref table Employee
+ref table LocalDateTable_0778b31c-b7a9-41f7-bb00-c37d6e901fba
+ref table LocalDateTable_bf35cb18-daea-4d8c-b365-abf13495b0f5
+ref table Events
+ref table LocalDateTable_353d8f1a-f541-4531-97a4-ad7292176847
+ref table LocalDateTable_d1cdf940-1302-41c7-9145-4e1ed4d7a88d
+ref table Flight
+ref table LocalDateTable_e8d73e29-91dd-4efa-bbc1-f54b9ce1614f
+ref table LocalDateTable_ca3a7a4d-3a57-4779-9071-ecea32a06401
+ref table Projects
+ref table LocalDateTable_085be249-5f62-43d6-a9f7-16be262e8e32
+ref table LocalDateTable_5db1293e-73b8-4399-81d1-a8f9b01cbda2
+ref table LocalDateTable_a7b42cc2-9476-46e4-9292-0b4320ff723c
+ref table 'AUTO DATE'
+ref table LocalDateTable_43b83421-aaa6-4eba-9673-3ff5be3a3a56
+ref table Orders
+ref table LocalDateTable_aa8537fd-fc4f-4f43-a162-ee8dec2f42c6
+ref table LocalDateTable_39576e03-8f08-43a8-8785-a208be91a23c
+ref table Returns
+ref table Products
+ref table Users
+

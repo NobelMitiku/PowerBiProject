@@ -1,0 +1,33 @@
+table Users
+	lineageTag: fa05c5b9-fdbe-4b2d-80d5-f1e39c63c30d
+
+	column Column1
+		dataType: string
+		lineageTag: 690f3baa-2811-456e-96bc-2a5fb7ee7fa5
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column2
+		dataType: string
+		lineageTag: 4013acdd-e495-417c-877e-f348f87921cf
+		summarizeBy: none
+		sourceColumn: Column2
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Users = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Sample Superstore.xlsx"), null, true),
+				    Users_Sheet = Source{[Item="Users",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Users_Sheet,{{"Column1", type text}, {"Column2", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,133 @@
+table Events
+	lineageTag: 8a13cbbf-8042-49df-af0f-a6f7e9f26d61
+
+	measure 'LAST OF END DATE' = LASTNONBLANK(Events[EndDateTime],Events[EndDateTime])
+		formatString: General Date
+		lineageTag: 115f3e53-9ccb-4d0e-ae60-d3cca08be431
+
+	measure 'LAST DATE' = LASTDATE(Events[EndDateTime])
+		formatString: General Date
+		lineageTag: 996a0ab4-2a7c-4881-bbda-54935d44ceb6
+
+	column EventID
+		dataType: int64
+		formatString: 0
+		lineageTag: bb984ccd-f948-4019-8c90-8de52add2a2e
+		summarizeBy: count
+		sourceColumn: EventID
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventName
+		dataType: string
+		lineageTag: 2aca61bd-611e-4deb-a9b2-04781d1eca75
+		summarizeBy: none
+		sourceColumn: EventName
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventType
+		dataType: string
+		lineageTag: 6b3ae238-720f-484c-bd8d-378d644a31e0
+		summarizeBy: none
+		sourceColumn: EventType
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5df866d1-d7bc-4f56-82d8-73ca613df80e
+		summarizeBy: none
+		sourceColumn: StartDateTime
+
+		variation Variation
+			isDefault
+			relationship: f2cf09e9-e1b2-4779-8f74-5c0d69594e68
+			defaultHierarchy: LocalDateTable_353d8f1a-f541-4531-97a4-ad7292176847.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column EndDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 96a6d49f-e87a-4b76-ac48-455245d16956
+		summarizeBy: none
+		sourceColumn: EndDateTime
+
+		variation Variation
+			isDefault
+			relationship: f7519568-6406-4e67-9ece-7cbe867739f0
+			defaultHierarchy: LocalDateTable_d1cdf940-1302-41c7-9145-4e1ed4d7a88d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'EVENT START YEAR' = YEAR(Events[StartDateTime])
+		dataType: int64
+		formatString: 0
+		lineageTag: 37b603e6-1466-4578-a553-a30cd628ed17
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column WEEKDAY = WEEKDAY(Events[StartDateTime])
+		dataType: int64
+		formatString: 0
+		lineageTag: fe9127f8-6065-41b4-bc2d-3d7de6eaab1a
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'DATE DIFF' = DATEDIFF(Events[StartDateTime],Events[EndDateTime],DAY)
+		dataType: int64
+		formatString: 0
+		lineageTag: fff9f141-0958-4ea3-865d-cc9fcfdbfa73
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column and = and(Events[EventName]="Webinar",Events[EventType]="learning")
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1793f003-192a-4790-bf1c-ac4d858361b2
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column or = or(Events[EventName]="Webinar",Events[EventType]="learning")
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: df1f7f6a-a952-441c-b8cd-47483d690f5f
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'event info' =
+			If(and(Events[EventName]="Webinar",Events[EventType]="learning"),
+			"it is learning webinar",
+			"It is not learning webinar")
+		dataType: string
+		lineageTag: 0ff0f201-6fcf-4425-950c-91d7deb8384c
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Events = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Date Time (1).xlsx"), null, true),
+				    Events_Sheet = Source{[Item="Events",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Events_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"EventID", Int64.Type}, {"EventName", type text}, {"EventType", type text}, {"StartDateTime", type datetime}, {"EndDateTime", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

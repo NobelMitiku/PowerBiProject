@@ -1,0 +1,33 @@
+table Returns
+	lineageTag: 004ee1d3-73b1-4fa5-9323-70738c76a961
+
+	column 'Order ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: bcb22f0f-ff3f-4684-8c47-6a18e2a6fd0e
+		summarizeBy: count
+		sourceColumn: Order ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: be3d44c9-9c1c-4e2f-8d80-aaf8197c91be
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Returns = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Sample Superstore (1).xlsx"), null, true),
+				    Returns_Sheet = Source{[Item="Returns",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Returns_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Order ID", Int64.Type}, {"Status", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Exception
+

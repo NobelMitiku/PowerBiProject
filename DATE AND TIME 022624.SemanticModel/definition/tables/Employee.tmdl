@@ -1,0 +1,62 @@
+table Employee
+	lineageTag: 90aa8993-5840-4389-894c-771fa6910524
+
+	column ShiftID
+		dataType: int64
+		formatString: 0
+		lineageTag: e62ee6f1-dc21-4291-9836-1cfb4c8725b4
+		summarizeBy: count
+		sourceColumn: ShiftID
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeID
+		dataType: int64
+		formatString: 0
+		lineageTag: 31f52bcf-4020-4a54-8a77-3cc682e19fc3
+		summarizeBy: count
+		sourceColumn: EmployeeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShiftStartDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 584cf426-2e8b-4d74-a0ff-bcc7b11473c9
+		summarizeBy: none
+		sourceColumn: ShiftStartDateTime
+
+		variation Variation
+			isDefault
+			relationship: 32442e13-edf3-4a83-b08e-fe1a7ffc7573
+			defaultHierarchy: LocalDateTable_c408b029-f0df-4662-965c-ef95e25d46f9.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShiftEndDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5e7669d2-992f-4c08-bb5f-97f3bc911c46
+		summarizeBy: none
+		sourceColumn: ShiftEndDateTime
+
+		variation Variation
+			isDefault
+			relationship: 31c531ae-889b-4657-aa03-3313ac4ffb17
+			defaultHierarchy: LocalDateTable_c263b482-8b95-4952-ae17-0bed4df0ac30.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Employee = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Date Time.xlsx"), null, true),
+				    Employee_Sheet = Source{[Item="Employee",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Employee_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ShiftID", Int64.Type}, {"EmployeeID", Int64.Type}, {"ShiftStartDateTime", type datetime}, {"ShiftEndDateTime", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

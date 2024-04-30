@@ -1,0 +1,159 @@
+table Texts
+	lineageTag: bfee10b3-c912-4bcf-8d68-d3d1a7edd0d9
+
+	column TextID
+		dataType: int64
+		formatString: 0
+		lineageTag: a2bed2b6-78c9-40f9-b3c6-b4b94d9fe1e9
+		summarizeBy: count
+		sourceColumn: TextID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Original
+		dataType: string
+		lineageTag: 888780ef-c114-4d83-8303-493b864a5058
+		summarizeBy: none
+		sourceColumn: Original
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: ff088251-4d70-4a95-8d80-f979f2c025ec
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: 3df6f1f5-1dd9-49ad-9f1e-690f4227a0cb
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ALL CAPS' = UPPER('Texts'[Original])
+		dataType: string
+		lineageTag: 3d2996b6-31f9-49bd-a4b7-4dc230cb1818
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ALL LOWER' = ```
+			LOWER('Texts'[Original]) 
+			```
+		dataType: string
+		lineageTag: b962fa2f-e307-46af-91bb-cd4ba055487d
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column TRIMMED = TRIM(Texts[Description])
+		dataType: string
+		lineageTag: 0f4aee5e-98f5-4915-845d-122b2966d466
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column SUBSTITUTED = ```
+			SUBSTITUTE('Texts'[Notes],"Note","Word") 
+			```
+		dataType: string
+		lineageTag: 063c7bde-49db-4269-9224-d148722c98af
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column REPLACE = REPLACE('Texts'[ALL CAPS],3,8,"***")
+		dataType: string
+		lineageTag: 09f2f2b6-6b69-4f8c-9e84-c766d60ba2e6
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column EX3 = CONCATENATE(MID(Texts[Original],2,4), RIGHT(Texts[Description],3))
+		dataType: string
+		lineageTag: f0f81f0f-ebf7-4076-bfc7-899651320cc3
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column EX4 = TRIM(Texts[Notes])
+		dataType: string
+		lineageTag: f79f08d4-a4a9-430a-8f35-5bdb5027e31e
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'EX4 LENGTH' = LEN(Texts[EX4])
+		dataType: int64
+		formatString: 0
+		lineageTag: dc204b01-b7fe-4efd-b50d-11df3d31093d
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'EX 8' = SUBSTITUTE(Texts[Description]," ","_")
+		dataType: string
+		lineageTag: e87fd6ab-30aa-4048-b7d1-248f80e949b1
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column EX8-1 = SUBSTITUTE(Texts[EX 8],"_","")
+		dataType: string
+		lineageTag: e1fec5af-ae83-4bbf-9244-4d76d462e7fe
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ex 10' = MID(Texts[Original],6,3)
+		dataType: string
+		lineageTag: d6e696e7-ef95-4613-8d0e-2c4c16b2d6c0
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column = SEARCH("*",'Texts'[REPLACE])
+		dataType: int64
+		formatString: 0
+		lineageTag: 5d475302-0b26-428e-9741-e572cebd92d8
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ex 15' = MID(Texts[Original],4,3)
+		dataType: string
+		lineageTag: 9dd344cb-f6d7-4338-972d-f3047cc991f1
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Texts = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\palace Store.xlsx"), null, true),
+				    Texts_Sheet = Source{[Item="Texts",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Texts_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"TextID", Int64.Type}, {"Original", type text}, {"Description", type text}, {"Notes", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

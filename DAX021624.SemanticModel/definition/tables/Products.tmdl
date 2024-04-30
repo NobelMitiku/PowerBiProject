@@ -1,0 +1,94 @@
+table Products
+	lineageTag: 13cc5e6a-6127-4416-9df3-815f91da5bf9
+
+	column ProductID
+		dataType: int64
+		formatString: 0
+		lineageTag: 9e892837-c0c6-45bd-bcce-c8c812637292
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: f11fd47d-3979-40e1-a0cf-1eb527258ed7
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 06d74fb4-d430-4045-97cb-9137a729bef7
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price
+		dataType: double
+		lineageTag: 2fcef5b1-23b4-4f5d-ada6-5e835ccfb113
+		summarizeBy: none
+		sourceColumn: Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ex2 = upper(Products[Category])
+		dataType: string
+		lineageTag: 69f0d826-f8a2-4739-ae8b-b151ea27c12a
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column ex2lower = LOWER(Products[Category])
+		dataType: string
+		lineageTag: 0fee28be-5742-4e95-b3ea-20448fb3f563
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column eX5 = ```
+			SUBSTITUTE(Products[ProductName],"a","X") 
+			```
+		dataType: string
+		lineageTag: cec4db23-1a9d-409a-8959-a6f694ba86c4
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'EX 9' = FIND(".",'Products'[Price])
+		dataType: int64
+		formatString: 0
+		lineageTag: 3e26c342-b5d6-487b-a5b9-9fe3fd4aed2b
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ex 13' = CONCATENATE(UPPER('Products'[ProductName]),",")
+		dataType: string
+		lineageTag: 91753b8a-1b2b-45ea-9837-dfa41161a4cd
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Products = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\palace Store.xlsx"), null, true),
+				    Products_Sheet = Source{[Item="Products",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Products_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ProductID", Int64.Type}, {"ProductName", type text}, {"Category", type text}, {"Price", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

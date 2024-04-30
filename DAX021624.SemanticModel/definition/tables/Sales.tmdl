@@ -1,0 +1,70 @@
+table Sales
+	lineageTag: 977c53ec-b253-43cf-be6d-d46da18d8be2
+
+	column SaleID
+		dataType: string
+		lineageTag: bcb5649b-780e-4acc-950c-2aac1d681a30
+		summarizeBy: none
+		sourceColumn: SaleID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: int64
+		formatString: 0
+		lineageTag: da47fb90-84b9-4165-be16-afb87e1fb426
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: double
+		lineageTag: a5c32d8e-cfeb-47a5-a3ab-1c02a3d05d8f
+		summarizeBy: count
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SaleDate
+		dataType: string
+		lineageTag: 6aea593f-1afd-4a5d-aa03-7d45e2d5ecfe
+		summarizeBy: none
+		sourceColumn: SaleDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: defd2983-c954-4835-a452-19ce2c7c8b66
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: double
+		lineageTag: ff9da319-fb61-4a40-96f6-dbf53cd398f5
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Sales = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\palace Store.xlsx"), null, true),
+				    Sales_Sheet = Source{[Item="Sales",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sales_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SaleID", type any}, {"ProductID", Int64.Type}, {"CustomerID", type number}, {"SaleDate", type any}, {"Quantity", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

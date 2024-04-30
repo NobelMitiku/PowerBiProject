@@ -1,0 +1,61 @@
+table Projects
+	lineageTag: b9f1ac77-cda2-471a-95a3-85ab8037c3d7
+
+	column ProjectID
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c46bf30-075f-4324-9646-d2ace7d823a2
+		summarizeBy: count
+		sourceColumn: ProjectID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectName
+		dataType: string
+		lineageTag: 3ad651c2-7b51-4bd2-8d1d-1be9ccfd95e4
+		summarizeBy: none
+		sourceColumn: ProjectName
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2fae1774-4d15-4f16-9379-de59a9075391
+		summarizeBy: none
+		sourceColumn: StartDate
+
+		variation Variation
+			isDefault
+			relationship: b60deb4f-7b19-45b8-95e3-f8502f897f0d
+			defaultHierarchy: LocalDateTable_62bf493d-cfd5-4094-894a-e07aa9a31a31.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column EndDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: e4ddbd2c-d641-48ce-b360-4f4228392a12
+		summarizeBy: none
+		sourceColumn: EndDate
+
+		variation Variation
+			isDefault
+			relationship: 6083f1f6-cd99-43a6-91b6-8458ab3998c2
+			defaultHierarchy: LocalDateTable_54147934-47cc-4801-9168-011b2455bb90.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Projects = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Date Time.xlsx"), null, true),
+				    Projects_Sheet = Source{[Item="Projects",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Projects_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ProjectID", Int64.Type}, {"ProjectName", type text}, {"StartDate", type datetime}, {"EndDate", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

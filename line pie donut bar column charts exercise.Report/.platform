@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "line pie donut bar column charts exercise"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f2e09fdb-1dae-4eb0-b248-54c75b74cd3a"
+  }
+}

@@ -1,0 +1,73 @@
+table Products
+	lineageTag: 6c0afe5c-4e50-41af-b798-0b84f1520ab5
+
+	measure 'DISTINCT SUB CATEGORIES' = ```
+			DISTINCTCOUNT('Products'[Product Sub-Category]) 
+			```
+		formatString: 0
+		lineageTag: e1b7317b-7f88-42e3-80e7-563c7cae06a4
+
+	column 'product id'
+		dataType: int64
+		formatString: 0
+		lineageTag: d00b3944-f121-415e-87aa-986a6d1145bd
+		summarizeBy: none
+		sourceColumn: product id
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Name'
+		dataType: string
+		lineageTag: 998432a5-1c1f-4357-b353-418a5f613fd4
+		summarizeBy: none
+		sourceColumn: Product Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Category'
+		dataType: string
+		lineageTag: 50d07cfc-0b91-402c-916f-bbfeb3596651
+		summarizeBy: none
+		sourceColumn: Product Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Container'
+		dataType: string
+		lineageTag: de51ac38-6e1e-4800-81cd-1e8997eb56c6
+		summarizeBy: none
+		sourceColumn: Product Container
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Sub-Category'
+		dataType: string
+		lineageTag: e4890897-1f3a-40df-82f3-6256caa6065a
+		summarizeBy: none
+		sourceColumn: Product Sub-Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Base Margin'
+		dataType: double
+		lineageTag: 1c18f5f5-6375-4bd0-b1e4-d05dbcaa86b1
+		summarizeBy: none
+		sourceColumn: Product Base Margin
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Products = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Sample Superstore (1).xlsx"), null, true),
+				    Products_Sheet = Source{[Item="Products",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Products_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"product id", Int64.Type}, {"Product Name", type text}, {"Product Category", type text}, {"Product Container", type text}, {"Product Sub-Category", type text}, {"Product Base Margin", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

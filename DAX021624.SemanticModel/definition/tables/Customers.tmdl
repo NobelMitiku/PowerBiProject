@@ -1,0 +1,233 @@
+table Customers
+	lineageTag: 18d2066f-79dd-4bbf-8383-3e81f7e83b77
+
+	column CustomerID
+		dataType: int64
+		formatString: 0
+		lineageTag: 8087a40d-3d6f-4978-9000-21d128f25370
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstName
+		dataType: string
+		lineageTag: 51401cef-d3e6-46e5-9d60-6f2345a67150
+		summarizeBy: none
+		sourceColumn: FirstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastName
+		dataType: string
+		lineageTag: 8dad11d7-c6fd-48ce-8b29-7206502caa6f
+		summarizeBy: none
+		sourceColumn: LastName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Email
+		dataType: string
+		lineageTag: 38b883b6-fa9e-41c1-afa0-14194d0a27c2
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column PhoneNumber
+		dataType: string
+		lineageTag: 67365215-0634-4826-81f8-cef77e7e3b73
+		summarizeBy: none
+		sourceColumn: PhoneNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column Birthdate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5d0dcb3b-882f-4c9f-bbb7-103448ba3c4d
+		summarizeBy: none
+		sourceColumn: Birthdate
+
+		variation Variation
+			isDefault
+			relationship: 1c131eb8-1b06-4679-a2d8-9a6fe9de4c9c
+			defaultHierarchy: LocalDateTable_e23cda8a-f622-4a67-a6ab-7300c4415955.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column FullName = 'Customers'[FirstName] & " " & 'Customers'[LastName]
+		dataType: string
+		lineageTag: 3be177ca-09be-43ee-a165-f1e622523a31
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column AGE = RIGHT("0" & DATEDIFF('Customers'[Birthdate],TODAY(),YEAR),2)
+		dataType: string
+		lineageTag: 3a7ff88f-674c-4671-a70d-7955b798a76f
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column LeftEmail = LEFT(Customers[Birthdate].[Month],3)
+		dataType: string
+		lineageTag: 30578e83-fc35-4b9e-93f9-1ee38d54232d
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column AreaCode = LEFT(Customers[PhoneNumber],5)
+		dataType: string
+		lineageTag: 8f0182d6-b6c7-4c3f-ab9e-f522a1d33bf1
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mid = MID('Customers'[FullName],2,3)
+		dataType: string
+		lineageTag: 02323fb9-371e-405f-a510-935ec6ebba06
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column MidPhone = ```
+			MID('Customers'[PhoneNumber],7,3) 
+			```
+		dataType: string
+		lineageTag: 72199524-f09e-49db-bd55-57e1569b4b0a
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'DIG OF PHONE' = LEN('Customers'[PhoneNumber])
+		dataType: int64
+		formatString: 0
+		lineageTag: 48e2de8c-87cb-449c-ae4c-6dd606031de7
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CHAR OF FULL NAME' = LEN('Customers'[FullName])
+		dataType: int64
+		formatString: 0
+		lineageTag: d64b607f-df45-4638-9f38-b728a06a7608
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column NAMECONCAT = ```
+			CONCATENATE('Customers'[FirstName], 'Customers'[LastName]) 
+			```
+		dataType: string
+		lineageTag: f00cd593-b2c0-4bf9-b818-5b834d66bb18
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column CONCATPHONE = CONCATENATE('Customers'[AreaCode],'Customers'[MidPhone])
+		dataType: string
+		lineageTag: 64db4df8-e90b-40b7-ae27-5db2b6a7f638
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CONCAT LEFT RIGHT' = ```
+			CONCATENATE(LEFT('Customers'[FirstName],2),RIGHT('Customers'[LastName],3)) 
+			```
+		dataType: string
+		lineageTag: e974eba5-71c6-449c-baf9-789c9307be75
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'LEFT RIGHT MID' = LEFT('Customers'[FirstName],2) & " " & RIGHT('Customers'[LastName],3) & " " & MID('Customers'[FullName],2,3) & "  YAY!"
+		dataType: string
+		lineageTag: 75890579-003d-45c1-8ed9-a3d01bb18684
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FIND CASE SENSITIVE' = FIND(")",'Customers'[PhoneNumber])
+		dataType: int64
+		formatString: 0
+		lineageTag: 475c5241-23d0-4c0a-bff9-cb2152f5c3dd
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEARCH = SEARCH("@",'Customers'[Email])
+		dataType: int64
+		formatString: 0
+		lineageTag: 65d2a466-35de-4d0c-879a-28c34eb9610b
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column ex1 = concatenate(left(Customers[FirstName],2),(right(Customers[LastName],3)))
+		dataType: string
+		lineageTag: ef11bd20-bc27-44b6-8d99-b69d2651e4fd
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ex 6' = Customers[FirstName] & " " & Customers[LastName]
+		dataType: string
+		lineageTag: 6bb8c227-c316-488f-89cc-2913a8e7e827
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ex 11' = EXACT('Customers'[LastName],'Products'[ProductName])
+		lineageTag: 0bfc1740-be32-4c57-941b-adf6d5bb34bc
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'EX 12' = REPLACE('Customers'[FirstName],1,2,"NEW")
+		dataType: string
+		lineageTag: b465bc95-56c4-4d82-9c61-0d05d64523be
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'EX 14' = TRIM(Customers[FirstName] & " " & Customers[LastName] & "," & " "&  Customers[Email])
+		dataType: string
+		lineageTag: 7f280107-89a5-4612-ac72-a700a373f9f6
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customers = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\palace Store.xlsx"), null, true),
+				    Customers_Sheet = Source{[Item="Customers",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Customers_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CustomerID", Int64.Type}, {"FirstName", type text}, {"LastName", type text}, {"Email", type text}, {"PhoneNumber", type text}, {"Birthdate", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

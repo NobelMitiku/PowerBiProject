@@ -1,0 +1,82 @@
+table Employee
+	lineageTag: ffbfa059-5842-4d35-8126-319ba3cbc56b
+
+	measure 'LATEST SHIFT' = WEEKDAY(MAX(Employee[ShiftStartDateTime]))
+		formatString: 0
+		lineageTag: c2753997-be75-4c5a-bfbd-7377a9ad7546
+
+	column ShiftID
+		dataType: int64
+		formatString: 0
+		lineageTag: d4e20422-f113-4760-8dbd-6a220dfd45c3
+		summarizeBy: count
+		sourceColumn: ShiftID
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeID
+		dataType: int64
+		formatString: 0
+		lineageTag: 1786e105-6c4c-4853-bc61-80f16b2cad65
+		summarizeBy: count
+		sourceColumn: EmployeeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShiftStartDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1f36ca8d-4d08-4271-9459-93bf62efb32f
+		summarizeBy: none
+		sourceColumn: ShiftStartDateTime
+
+		variation Variation
+			isDefault
+			relationship: 6d034255-8f9f-47e0-8549-4415f0e258cc
+			defaultHierarchy: LocalDateTable_0778b31c-b7a9-41f7-bb00-c37d6e901fba.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShiftEndDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5cd60b58-a8f4-4486-8928-6dfc368c9750
+		summarizeBy: none
+		sourceColumn: ShiftEndDateTime
+
+		variation Variation
+			isDefault
+			relationship: 53538d1e-908f-4aba-91cc-232d1fa9ce81
+			defaultHierarchy: LocalDateTable_bf35cb18-daea-4d8c-b365-abf13495b0f5.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column day = format(Day(Employee[ShiftStartDateTime]),"DDDD")
+		dataType: string
+		lineageTag: 372f85dc-b43f-4a99-a87a-f42f23dc232d
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column WEEKEND = If(OR(format(Day(Employee[ShiftStartDateTime]),"DDDD")="Saturday",format(Day(Employee[ShiftStartDateTime]),"DDDD")="Sunday"),"Weekend","Weekday")
+		dataType: string
+		lineageTag: 6f8fbcac-e376-4d4a-b7d6-d5bbb10490c5
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Employee = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Date Time (1).xlsx"), null, true),
+				    Employee_Sheet = Source{[Item="Employee",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Employee_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ShiftID", Int64.Type}, {"EmployeeID", Int64.Type}, {"ShiftStartDateTime", type datetime}, {"ShiftEndDateTime", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

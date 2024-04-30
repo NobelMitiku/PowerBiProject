@@ -1,0 +1,79 @@
+relationship a0fd5d6b-f31f-4264-a8a6-97fda3672969
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Customers.BirthDate
+	toColumn: LocalDateTable_3941cfcc-cf39-498e-851c-9d51fca8556d.Date
+
+relationship 804f0fae-7ac5-44ef-ada4-cf49a39e5d7e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Customers.'Membership Start Date'
+	toColumn: LocalDateTable_a3ec7e21-8f00-4711-b304-05c124d704ac.Date
+
+relationship 7ca4767a-aa45-465b-b280-74e08e2c95f4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Customers.'Last Purchase Date'
+	toColumn: LocalDateTable_57474575-f876-4ae2-b6e8-9849ee0a5847.Date
+
+relationship 6d034255-8f9f-47e0-8549-4415f0e258cc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Employee.ShiftStartDateTime
+	toColumn: LocalDateTable_0778b31c-b7a9-41f7-bb00-c37d6e901fba.Date
+
+relationship 53538d1e-908f-4aba-91cc-232d1fa9ce81
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Employee.ShiftEndDateTime
+	toColumn: LocalDateTable_bf35cb18-daea-4d8c-b365-abf13495b0f5.Date
+
+relationship f2cf09e9-e1b2-4779-8f74-5c0d69594e68
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Events.StartDateTime
+	toColumn: LocalDateTable_353d8f1a-f541-4531-97a4-ad7292176847.Date
+
+relationship f7519568-6406-4e67-9ece-7cbe867739f0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Events.EndDateTime
+	toColumn: LocalDateTable_d1cdf940-1302-41c7-9145-4e1ed4d7a88d.Date
+
+relationship 8cbb500e-d16c-4e4b-b1c4-533d563b6fe5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Flight.'Departure Time'
+	toColumn: LocalDateTable_e8d73e29-91dd-4efa-bbc1-f54b9ce1614f.Date
+
+relationship 7ab191de-0ded-4f29-8bce-93775693a209
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Flight.'Arrival Time'
+	toColumn: LocalDateTable_ca3a7a4d-3a57-4779-9071-ecea32a06401.Date
+
+relationship 8dd2631c-02a3-4f07-ae09-334ae0f2c89a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Projects.StartDate
+	toColumn: LocalDateTable_085be249-5f62-43d6-a9f7-16be262e8e32.Date
+
+relationship 6f3c439e-8b1c-486d-bede-108072cd73a2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Projects.EndDate
+	toColumn: LocalDateTable_5db1293e-73b8-4399-81d1-a8f9b01cbda2.Date
+
+relationship df1896b8-f783-4a4e-a10e-92dcdfb9c9b9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Customers.CURRENTDATE
+	toColumn: LocalDateTable_a7b42cc2-9476-46e4-9292-0b4320ff723c.Date
+
+relationship 7c2f3209-259e-4d85-b42d-74c3c3f2e371
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'AUTO DATE'.Date
+	toColumn: LocalDateTable_43b83421-aaa6-4eba-9673-3ff5be3a3a56.Date
+
+relationship ddb2db9e-3b70-4ecb-8ca4-c10f1c8d6ce2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Orders.'Order Date'
+	toColumn: LocalDateTable_aa8537fd-fc4f-4f43-a162-ee8dec2f42c6.Date
+
+relationship bdb2ffd3-6e09-4c5b-a454-6b01133041aa
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Orders.'Ship Date'
+	toColumn: LocalDateTable_39576e03-8f08-43a8-8785-a208be91a23c.Date
+
+relationship f4821147-5ae4-4c3e-8eed-41cddcf12e61
+	fromColumn: Orders.'Product Id'
+	toColumn: Products.'product id'
+

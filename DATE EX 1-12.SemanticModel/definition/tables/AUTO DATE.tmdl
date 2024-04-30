@@ -1,0 +1,29 @@
+table 'AUTO DATE'
+	lineageTag: 1413a341-8d3c-4117-8900-284ac4349015
+
+	measure 'START DATE' = FIRSTDATE('AUTO DATE'[Date].[Date])
+		formatString: General Date
+		lineageTag: 7a8152e8-6fea-4e3b-be96-dd7f9e5e5923
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 953e2b2b-c879-4320-9f9f-f5a4f179a6ce
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 7c2f3209-259e-4d85-b42d-74c3c3f2e371
+			defaultHierarchy: LocalDateTable_43b83421-aaa6-4eba-9673-3ff5be3a3a56.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'AUTO DATE' = calculated
+		mode: import
+		source = CALENDARAUTO()
+
+	annotation PBI_Id = 26e8380cd6af47edbf02fa66af36b84a
+

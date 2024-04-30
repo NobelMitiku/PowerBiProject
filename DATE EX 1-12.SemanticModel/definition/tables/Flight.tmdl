@@ -1,0 +1,89 @@
+table Flight
+	lineageTag: 40a38235-d1b9-4899-8b35-1b2c8eb5655f
+
+	measure 'RECENT FLIGHT' = MAX(Flight[Departure Time].[Month])
+		lineageTag: 93462136-5f35-4e37-aa97-ea07782b1641
+
+	column 'Flight ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 59daa3de-fee6-4c16-a5b9-39336720f92b
+		summarizeBy: count
+		sourceColumn: Flight ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Airline
+		dataType: string
+		lineageTag: 2bbdcfb2-b1aa-43d2-bc34-cdad40bb873e
+		summarizeBy: none
+		sourceColumn: Airline
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Departure City'
+		dataType: string
+		lineageTag: 7bc0f2ce-d672-43ca-aabd-b6a2ab9212cb
+		summarizeBy: none
+		sourceColumn: Departure City
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Arrival City'
+		dataType: string
+		lineageTag: e9bb3a97-0403-4c16-9a8a-faab00111cd9
+		summarizeBy: none
+		sourceColumn: Arrival City
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Departure Time'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ba40e599-518b-456f-a4cd-b99d35fc63cf
+		summarizeBy: none
+		sourceColumn: Departure Time
+
+		variation Variation
+			isDefault
+			relationship: 8cbb500e-d16c-4e4b-b1c4-533d563b6fe5
+			defaultHierarchy: LocalDateTable_e8d73e29-91dd-4efa-bbc1-f54b9ce1614f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Arrival Time'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f8f854bc-3912-4297-94a1-7b8e8d3d25fd
+		summarizeBy: none
+		sourceColumn: Arrival Time
+
+		variation Variation
+			isDefault
+			relationship: 7ab191de-0ded-4f29-8bce-93775693a209
+			defaultHierarchy: LocalDateTable_ca3a7a4d-3a57-4779-9071-ecea32a06401.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column City = NOT(Flight[Departure City]=Flight[Arrival City])
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 0677c0a6-6303-4baa-a21c-6f7ddaaf8af3
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Flight = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Date Time (1).xlsx"), null, true),
+				    Flight_Sheet = Source{[Item="Flight",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Flight_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Flight ID", Int64.Type}, {"Airline", type text}, {"Departure City", type text}, {"Arrival City", type text}, {"Departure Time", type datetime}, {"Arrival Time", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

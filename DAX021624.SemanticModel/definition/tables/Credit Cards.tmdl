@@ -1,0 +1,74 @@
+table 'Credit Cards'
+	lineageTag: 218a99d8-b90e-4895-b111-6cd65af7e21a
+
+	column CardID
+		dataType: int64
+		formatString: 0
+		lineageTag: dc2e1b61-e671-423e-a789-9c71e542455b
+		summarizeBy: count
+		sourceColumn: CardID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: int64
+		formatString: 0
+		lineageTag: 2b939284-a491-43f0-bb16-0b764f894247
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CardNumber
+		dataType: string
+		lineageTag: 3d2857c9-325b-4389-b480-16d415fc083d
+		summarizeBy: none
+		sourceColumn: CardNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExpiryDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 196093fa-6d4d-4ab0-b551-8a2c2da0e0df
+		summarizeBy: none
+		sourceColumn: ExpiryDate
+
+		variation Variation
+			isDefault
+			relationship: dc42e1ad-f999-4c91-8e88-905aa302f5e7
+			defaultHierarchy: LocalDateTable_381bb021-e65d-4f47-84eb-e4dadc559250.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CardType
+		dataType: string
+		lineageTag: 72436783-1fe2-4d40-b991-fdde1920ddbb
+		summarizeBy: none
+		sourceColumn: CardType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ex 7' = concatenate(left('Credit Cards'[CardNumber],5), RIGHT('Credit Cards'[CardNumber],5))
+		dataType: string
+		lineageTag: 1821d4d0-fa22-4296-86ab-485b5d550e37
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Credit Cards' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\palace Store.xlsx"), null, true),
+				    #"Credit Cards_Sheet" = Source{[Item="Credit Cards",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Credit Cards_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CardID", Int64.Type}, {"CustomerID", Int64.Type}, {"CardNumber", type text}, {"ExpiryDate", type date}, {"CardType", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

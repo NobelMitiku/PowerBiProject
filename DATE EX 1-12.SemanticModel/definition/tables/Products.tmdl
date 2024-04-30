@@ -1,0 +1,80 @@
+table Products
+	lineageTag: 812fe380-93a5-4dae-9c6f-82723b64f266
+
+	column 'product id'
+		dataType: int64
+		formatString: 0
+		lineageTag: 42bcfaac-30da-46d5-b296-b5d48409fabc
+		summarizeBy: none
+		sourceColumn: product id
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Name'
+		dataType: string
+		lineageTag: 11d4c68a-ad3f-42cc-b36b-268f2d13c8af
+		summarizeBy: none
+		sourceColumn: Product Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Category'
+		dataType: string
+		lineageTag: ec5d8a43-81ab-4894-8a24-f65b006f8a4c
+		summarizeBy: none
+		sourceColumn: Product Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Container'
+		dataType: string
+		lineageTag: cb770732-5a3d-4d2c-91dc-bbebc5eba49d
+		summarizeBy: none
+		sourceColumn: Product Container
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Sub-Category'
+		dataType: string
+		lineageTag: 1b25cb8f-dfe5-4491-b160-f46235bf35d9
+		summarizeBy: none
+		sourceColumn: Product Sub-Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Base Margin'
+		dataType: double
+		lineageTag: 24d01473-f1ec-40b8-b55f-6ee7291ffead
+		summarizeBy: none
+		sourceColumn: Product Base Margin
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Container =
+			SWITCH(Products[Product Container],
+			"Small Box","A",
+			"Large Box","B",
+			"Jumbo Drum","C",
+			"Not Graded")
+		dataType: string
+		lineageTag: 02340ee1-60e4-4748-8fe8-38069507a4b1
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Products = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Sample Superstore (1).xlsx"), null, true),
+				    Products_Sheet = Source{[Item="Products",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Products_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"product id", Int64.Type}, {"Product Name", type text}, {"Product Category", type text}, {"Product Container", type text}, {"Product Sub-Category", type text}, {"Product Base Margin", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

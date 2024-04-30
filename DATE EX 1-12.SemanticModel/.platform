@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "DATE EX 1-12"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "84e20114-2f1b-4fac-9ab0-40c242f1a050"
+  }
+}

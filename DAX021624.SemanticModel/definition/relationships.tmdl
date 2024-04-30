@@ -1,0 +1,18 @@
+relationship dc42e1ad-f999-4c91-8e88-905aa302f5e7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Credit Cards'.ExpiryDate
+	toColumn: LocalDateTable_381bb021-e65d-4f47-84eb-e4dadc559250.Date
+
+relationship 1c131eb8-1b06-4679-a2d8-9a6fe9de4c9c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Customers.Birthdate
+	toColumn: LocalDateTable_e23cda8a-f622-4a67-a6ab-7300c4415955.Date
+
+relationship 79f783b1-1f90-4ab9-95d9-acf0e47823eb
+	fromColumn: 'Credit Cards'.CustomerID
+	toColumn: Customers.CustomerID
+
+relationship 6645cd17-769e-4f89-b028-353ac8b605d4
+	fromColumn: Sales.ProductID
+	toColumn: Products.ProductID
+

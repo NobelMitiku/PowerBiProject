@@ -1,0 +1,9 @@
+{
+  "version": "4.0",
+  "datasetReference": {
+    "byPath": {
+      "path": "../Math and Stat Exercise.SemanticModel"
+    },
+    "byConnection": null
+  }
+}

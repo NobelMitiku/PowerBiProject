@@ -1,0 +1,40 @@
+table Users
+	lineageTag: c779b732-66f3-40f2-9b03-844372b51854
+
+	column Column1
+		dataType: string
+		lineageTag: f04e171f-c151-49d6-be6a-92a136999880
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column2
+		dataType: string
+		lineageTag: 7818d116-5ad2-4590-bf86-80caf9190dee
+		summarizeBy: none
+		sourceColumn: Column2
+
+		annotation SummarizationSetBy = Automatic
+
+	column AND = AND(Users[Column1]="Central",Users[Column2]="Chris")
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ca6622ae-1cb9-47c9-a216-ff001770b7aa
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Users = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Saba Teferra\Downloads\Sample Superstore (1).xlsx"), null, true),
+				    Users_Sheet = Source{[Item="Users",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Users_Sheet,{{"Column1", type text}, {"Column2", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Exception
+
